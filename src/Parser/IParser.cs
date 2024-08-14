@@ -4,9 +4,11 @@ namespace RestClient.Parser;
 
 public interface IFileParser
 {
-    RequestsList ParseFile(FileInfo file);
+    ParsedFileData ParseFile(FileInfo file);
 }
 public interface IDirectoryParser
 {
     RequestsDirectory ParseDir(DirectoryInfo dir);
 }
+
+public record ParsedFileData(IEnumerable<Models.Request> Requests, Models.RequestsContext Context);
