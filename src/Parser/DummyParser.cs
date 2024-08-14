@@ -10,7 +10,7 @@ public class DummyFileParser : IFileParser
         [
             new Request
             {
-                Url = "http://localhost:{{host}}",
+                Url = "http://localhost:{{port}}",
                 Method = HttpMethod.Get,
             }
         ];
@@ -19,7 +19,7 @@ public class DummyFileParser : IFileParser
         {
             Variables =
             [
-                new("host", "1236"),
+                new("port", "1236"),
                 new("token", "my-cool-token")
             ],
         };
