@@ -1,6 +1,7 @@
 ﻿using Adw;
 using Gio;
 using Gtk;
+using RestClient.GtkClient;
 
 const string AppId = "ru.is2-19.rest-client";
 var app = Adw.Application.New(AppId, ApplicationFlags.DefaultFlags);
@@ -33,8 +34,9 @@ window.AddBreakpoint(breakpoint);
 
 app.OnActivate += (s, args) =>
 {
-    app.AddWindow(window);
-    window.Present();
+    var mainWindow = MainWindow.New();
+    app.AddWindow(mainWindow);
+    mainWindow.Present();
 };
 
 app.RunWithSynchronizationContext(args);
@@ -70,6 +72,8 @@ Widget GetSidebarContent()
 
     return box;
 }
+
+void LoadGResources() { }
 
 Adw.HeaderBar GetHeaderBar()
 {
