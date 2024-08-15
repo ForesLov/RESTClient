@@ -1,9 +1,12 @@
 # # Rest client Makefile
 
+AppId := ru.is2-19.rest-client
+
 ifeq ($(OS), Windows_NT)
 	Client := no-client
 else
-	Client := ./src/GtkClient/GtkClient.csproj
+	ClientDir := ./src/GtkClient
+	Client := $(ClientDir)/GtkClient.csproj
 endif
 
 .PHONY: run test
@@ -12,10 +15,13 @@ endif
 
 # - `help` - Prints help message
 default help: 
-	@cat $(shell pwd)/Makefile | grep -E "^#" | sed "s/^[#]/ /g" | gum format
+	@cat $(shell pwd)/Makefile | grep -E "^# " | sed "s/^[#]/ /g" | gum format
 
 # - `run` - Runs client project
 run:
+ifneq ($(OS), Windows_NT)
+	#glib-compile-resources $(ClientDir)/Resources/$(AppId).gresource.xml
+endif
 	dotnet run --project $(Client)
 
 # - `test` - Runs all tests
