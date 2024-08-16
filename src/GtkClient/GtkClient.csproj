@@ -14,7 +14,8 @@
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="echo Compiling extra resources..." />
-    <Exec Command="blueprint-compiler batch-compile ./Blueprints ./Blueprints ./Blueprints/*.blp" />
+    <Exec
+      Command="blueprint-compiler batch-compile $(OutDir)/Blueprints ./Blueprints ./Blueprints/*.blp" />
     <Exec
       Command="glib-compile-resources --sourcedir=Resources Resources/$(AppId).gresource.xml --target=$(OutDir)$(AppId).gresource" />
     <!-- <Exec Command="while read lang_code; do \&#xA;  mkdir -p $(OutDir)${lang_code}; \&#xA;
@@ -25,12 +26,9 @@
 
   <Target Name="EmbedUIFiles" BeforeTargets="BeforeResGen">
     <ItemGroup>
-      <EmbeddedResource Include="Blueprints/*.ui" Type="Non-Resx" WithCulture="false" />
+      <EmbeddedResource Include="$(OutDir)/Blueprints/*.ui" Type="Non-Resx" WithCulture="false" />
     </ItemGroup>
   </Target>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rm ./Blueprints/*.ui" />
-  </Target>
 
 </Project>

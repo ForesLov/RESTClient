@@ -1,0 +1,137 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.ApplicationWindow _root {
+    width-request: 400;
+    // default-width: 600;
+
+    Adw.Breakpoint {
+        condition ("max-width: 500sp")
+        setters {
+            _splitView.collapsed: true;
+            _splitTitleButton.visible: true;
+        }
+    }
+
+    content: Adw.OverlaySplitView _splitView {
+        min-sidebar-width: 300;
+        show-sidebar: true;
+        collapsed: false;
+
+        content: Box {
+            orientation: vertical;
+            [top]
+            Adw.HeaderBar {
+                title-widget: Adw.WindowTitle _title {
+                    title: "REST client";
+                };
+                styles ["flat"]
+
+                [start]
+                Gtk.Button _splitTitleButton {
+                    visible: false;
+                    Adw.ButtonContent {
+                        icon-name: "panel-left-symbolic";
+                    }
+                }
+            }
+            Adw.TabBar {
+              styles ["inline"]
+              //autohide: false;
+              view: Adw.TabView _tabView {
+                Adw.TabPage {
+                  title: "v2 - Users - Get all";
+                  tooltip: _("Current tab");
+                  loading: true;
+
+                  child: Gtk.Box {
+                    orientation: vertical;
+                    //hexpand: true;
+                    Box {
+                      styles ["linked"]
+                      hexpand: true;
+                      orientation: horizontal;
+                      Button {
+                        label: "GET";
+                      }
+                      Entry {
+                        placeholder-text: "URL";
+                      }
+                      Button {
+                        label: _("Run");
+                        //end-icon-name: "execute-to-symbolic";
+                        styles ["suggested-action"]
+                      }
+                    }
+                  };
+                }
+              };
+            }
+        };
+        sidebar: Adw.NavigationPage {
+          title: "API overview";
+          Adw.ToolbarView {
+            [top]
+            Adw.HeaderBar {
+              title-widget: Adw.WindowTitle {
+                title:"API overview";
+              };
+              [start]
+              Gtk.Button {
+                icon-name: "search-symbolic";
+              }
+              [end]
+              Gtk.Button {
+                icon-name: "open-menu";
+              }
+            }
+            content: Gtk.Box{
+              orientation: vertical;
+              spacing: 12;
+              margin-start: 10; margin-end: 10;
+
+              Adw.PreferencesGroup {
+                title: "v1";
+                description: "Directory: ./v1/";
+                Adw.ExpanderRow {
+                  title: "Users";
+                  subtitle: "File: ./v1/users.http";
+                  Adw.ActionRow {
+                    title: "Get all";
+                    subtitle: "GET localhost:{{port}}/users/";
+                  }
+                }
+              }
+
+              Adw.PreferencesGroup {
+                title: _("v2");
+                description: _("Directory: ./v2/");
+                Adw.ExpanderRow {
+                  title: _("Users");
+                  subtitle: "File: ./v2/users.http";
+
+                  Adw.ActionRow {
+                    title: "Get all";
+                    subtitle: _("GET localhost:{{port}}/users/all");
+                  }
+                  Adw.ActionRow {
+                    title: _("Delete");
+                    subtitle: _("DELETE localhost:{{port}}/users/delete?id=12");
+                  }
+                }
+                Adw.ExpanderRow {
+                  title: "Items";
+                  subtitle: "File: ./v2/items.http";
+
+                  Adw.ActionRow {
+                    title: "Edit";
+                    subtitle: "POST localhost:{{port}}/items/edit";
+                  }
+                }
+              }
+            };
+          }
+        };
+    };
+    
+}
