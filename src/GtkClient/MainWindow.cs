@@ -10,13 +10,11 @@ public class MainWindow : Adw.ApplicationWindow
     const bool NotOwnReference = false;
     private readonly Builder _builder;
 
-    [Gtk.Connect]
+    [Connect]
     private readonly Button _splitTitleButton;
 
-    [Gtk.Connect]
+    [Connect]
     private readonly OverlaySplitView _splitView;
-    [Gtk.Connect]
-    private readonly Adw.TabView _tabView;
 
     private MainWindow(Gtk.Builder builder)
         : base(builder.GetPointer("_root"), NotOwnReference)
@@ -30,16 +28,9 @@ public class MainWindow : Adw.ApplicationWindow
             _splitView.ShowSidebar = true;
         };
 
-        _tabView.AddShortcuts(TabViewShortcuts.AllShortcuts);
 
-        var page = _tabView.Append(RequestView.New());
-        page.Title = "Generated tab";
-        page.NeedsAttention = true;
-        page.Child.Show();
-        _tabView.Append(RequestView.New());
-        _tabView.Append(RequestView.New());
-        _tabView.Append(RequestView.New());
-        _tabView.Append(RequestView.New());
+
+
 
 #if DEBUG
         AddCssClass("devel");

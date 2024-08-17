@@ -2,7 +2,8 @@ using Gtk 4.0;
 using Adw 1;
 
 Adw.ApplicationWindow _root {
-  width-request: 400;
+  width-request: 800;
+  height-request: 500;
   // default-width: 600;
   Adw.Breakpoint {
     condition ("max-width: 500sp")
@@ -41,49 +42,18 @@ Adw.ApplicationWindow _root {
         }
       }
 
-      Adw.TabBar {
+      /* Adw.TabBar {
         styles [
           "inline"
         ]
 
         // autohide: false;
-        view: Adw.TabView _tabView {
-          Adw.TabPage {
-            title: "v2 - Users - Get all";
-            tooltip: _("Current tab");
-            loading: true;
-
-            child: Gtk.Box {
-              orientation: vertical;
-              // hexpand: true;
-              Box {
-                styles [
-                  "linked"
-                ]
-
-                hexpand: true;
-                orientation: horizontal;
-
-                Button {
-                  label: "GET";
-                }
-
-                Entry {
-                  placeholder-text: "URL";
-                }
-
-                Button {
-                  label: _("Run");
-                  // end-icon-name: "execute-to-symbolic";
-                  styles [
-                    "suggested-action"
-                  ]
-                }
-              }
-            };
-          }
-        };
+        view: _tabView;
       }
+
+      StackPage {
+        child: Adw.TabView _tabView {};
+      } */
     };
 
     sidebar: Adw.NavigationPage {
@@ -98,7 +68,7 @@ Adw.ApplicationWindow _root {
 
           [start]
           Gtk.Button {
-            icon-name: "search-symbolic";
+            icon-name: "loupe-symbolic";
           }
 
           [end]

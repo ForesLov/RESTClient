@@ -1,5 +1,6 @@
 <gresources>
   <gresource prefix="/ru/is2-19/rest-client/icons/scalable/actions/">
     <file preprocess="xml-stripblanks">menu-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">loupe-symbolic.svg</file>
   </gresource>
 </gresources>
