@@ -2,156 +2,189 @@ using Gtk 4.0;
 using Adw 1;
 
 Adw.ApplicationWindow _root {
-    width-request: 400;
-    // default-width: 600;
+  width-request: 400;
+  // default-width: 600;
+  Adw.Breakpoint {
+    condition ("max-width: 500sp")
 
-    Adw.Breakpoint {
-        condition ("max-width: 500sp")
-        setters {
-            _splitView.collapsed: true;
-            _splitTitleButton.visible: true;
-        }
+    setters {
+      _splitView.collapsed: true;
+      _splitTitleButton.visible: true;
     }
+  }
 
-    content: Adw.OverlaySplitView _splitView {
-        min-sidebar-width: 300;
-        show-sidebar: true;
-        collapsed: false;
+  content: Adw.OverlaySplitView _splitView {
+    min-sidebar-width: 300;
+    show-sidebar: true;
+    collapsed: false;
 
-        content: Box {
-            orientation: vertical;
-            [top]
-            Adw.HeaderBar {
-                title-widget: Adw.WindowTitle _title {
-                    title: "REST client";
-                };
-                styles ["flat"]
+    content: Box {
+      orientation: vertical;
 
-                [start]
-                Gtk.Button _splitTitleButton {
-                    visible: false;
-                    Adw.ButtonContent {
-                        icon-name: "panel-left-symbolic";
-                    }
-                }
-            }
-            Adw.TabBar {
-              styles ["inline"]
-              //autohide: false;
-              view: Adw.TabView _tabView {
-                Adw.TabPage {
-                  title: "v2 - Users - Get all";
-                  tooltip: _("Current tab");
-                  loading: true;
-
-                  child: Gtk.Box {
-                    orientation: vertical;
-                    //hexpand: true;
-                    Box {
-                      styles ["linked"]
-                      hexpand: true;
-                      orientation: horizontal;
-                      Button {
-                        label: "GET";
-                      }
-                      Entry {
-                        placeholder-text: "URL";
-                      }
-                      Button {
-                        label: _("Run");
-                        //end-icon-name: "execute-to-symbolic";
-                        styles ["suggested-action"]
-                      }
-                    }
-                  };
-                }
-              };
-            }
+      [top]
+      Adw.HeaderBar {
+        title-widget: Adw.WindowTitle _title {
+          title: "REST client";
         };
-        sidebar: Adw.NavigationPage {
-          title: "API overview";
-          Adw.ToolbarView {
-            [top]
-            Adw.HeaderBar {
-              title-widget: Adw.WindowTitle {
-                title:"API overview";
-              };
-              [start]
-              Gtk.Button {
-                icon-name: "search-symbolic";
-              }
-              [end]
-              Gtk.Button {
-                icon-name: "open-menu";
-              }
-            }
-            content: Gtk.Box{
+
+        styles [
+          "flat"
+        ]
+
+        [start]
+        Gtk.Button _splitTitleButton {
+          visible: false;
+
+          Adw.ButtonContent {
+            icon-name: "panel-left-symbolic";
+          }
+        }
+      }
+
+      Adw.TabBar {
+        styles [
+          "inline"
+        ]
+
+        // autohide: false;
+        view: Adw.TabView _tabView {
+          Adw.TabPage {
+            title: "v2 - Users - Get all";
+            tooltip: _("Current tab");
+            loading: true;
+
+            child: Gtk.Box {
               orientation: vertical;
-              spacing: 12;
-              margin-start: 10; margin-end: 10;
+              // hexpand: true;
+              Box {
+                styles [
+                  "linked"
+                ]
 
-              Gtk.ListBox {
-                styles ["boxed-list"]
-                Adw.ExpanderRow {
-                  title: "General";
-                  subtitle: "FILE: ./MyAwesomeApi.http";
-                  Adw.ActionRow {
-                    title: "Ping";
-                    subtitle: "GET localhost:{{port}}/ping";
-                  }
-                  Adw.ActionRow {
-                    title: "Status";
-                    subtitle: "POST localhost:{{post}}/status";
-                  }
+                hexpand: true;
+                orientation: horizontal;
+
+                Button {
+                  label: "GET";
                 }
-                Adw.ExpanderRow {
-                  title: "Utils";
-                  subtitle: "FILE: ./utils.http";
+
+                Entry {
+                  placeholder-text: "URL";
                 }
-              }
 
-              Adw.PreferencesGroup {
-                title: "v1";
-                description: "Directory: ./v1/";
-                Adw.ExpanderRow {
-                  title: "Users";
-                  subtitle: "File: ./v1/users.http";
-                  Adw.ActionRow {
-                    title: "Get all";
-                    subtitle: "GET localhost:{{port}}/users/";
-                  }
-                }
-              }
-
-              Adw.PreferencesGroup {
-                title: _("v2");
-                description: _("Directory: ./v2/");
-                Adw.ExpanderRow {
-                  title: _("Users");
-                  subtitle: "File: ./v2/users.http";
-
-                  Adw.ActionRow {
-                    title: "Get all";
-                    subtitle: _("GET localhost:{{port}}/users/all");
-                  }
-                  Adw.ActionRow {
-                    title: _("Delete");
-                    subtitle: _("DELETE localhost:{{port}}/users/delete?id=12");
-                  }
-                }
-                Adw.ExpanderRow {
-                  title: "Items";
-                  subtitle: "File: ./v2/items.http";
-
-                  Adw.ActionRow {
-                    title: "Edit";
-                    subtitle: "POST localhost:{{port}}/items/edit";
-                  }
+                Button {
+                  label: _("Run");
+                  // end-icon-name: "execute-to-symbolic";
+                  styles [
+                    "suggested-action"
+                  ]
                 }
               }
             };
           }
         };
+      }
     };
-    
+
+    sidebar: Adw.NavigationPage {
+      title: "API overview";
+
+      Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          title-widget: Adw.WindowTitle {
+            title: "API overview";
+          };
+
+          [start]
+          Gtk.Button {
+            icon-name: "search-symbolic";
+          }
+
+          [end]
+          Gtk.Button {
+            icon-name: "open-menu";
+          }
+        }
+
+        content: Gtk.Box {
+          orientation: vertical;
+          spacing: 12;
+          margin-start: 10;
+          margin-end: 10;
+
+          Gtk.ListBox {
+            styles [
+              "boxed-list"
+            ]
+
+            Adw.ExpanderRow {
+              title: "General";
+              subtitle: "FILE: ./MyAwesomeApi.http";
+
+              Adw.ActionRow {
+                title: "Ping";
+                subtitle: "GET localhost:{{port}}/ping";
+              }
+
+              Adw.ActionRow {
+                title: "Status";
+                subtitle: "POST localhost:{{post}}/status";
+              }
+            }
+
+            Adw.ExpanderRow {
+              title: "Utils";
+              subtitle: "FILE: ./utils.http";
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: "v1";
+            description: "Directory: ./v1/";
+
+            Adw.ExpanderRow {
+              title: "Users";
+              subtitle: "File: ./v1/users.http";
+
+              Adw.ActionRow {
+                title: "Get all";
+                subtitle: "GET localhost:{{port}}/users/";
+              }
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("v2");
+            description: _("Directory: ./v2/");
+
+            Adw.ExpanderRow {
+              title: _("Users");
+              subtitle: "File: ./v2/users.http";
+
+              Adw.ActionRow {
+                title: "Get all";
+                subtitle: _("GET localhost:{{port}}/users/all");
+              }
+
+              Adw.ActionRow {
+                title: _("Delete");
+                subtitle: _("DELETE localhost:{{port}}/users/delete?id=12");
+              }
+            }
+
+            Adw.ExpanderRow {
+              title: "Items";
+              subtitle: "File: ./v2/items.http";
+
+              Adw.ActionRow {
+                title: "Edit";
+                subtitle: "POST localhost:{{port}}/items/edit";
+              }
+            }
+          }
+        };
+      }
+    };
+  };
 }
