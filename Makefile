@@ -27,5 +27,19 @@ endif
 # - `test` - Runs all tests
 test: 
 	dotnet test
-#
+
+# - `install-blueprints` - installs `blueprint-compiler` to `/usr/bin`
+# **_WARN!_ This target will use sudo**
+install-blueprints: 
+
+BlueprintsSourceDir := /tmp/blueprints
+install-blueprints:$(BlueprintsSourceDir)
+	cd $(BlueprintsSourceDir) && \
+	meson _build && \
+	pkexec ninja -C $(BlueprintsSourceDir)/_build install
+
+$(BlueprintsSourceDir): 
+	git clone https://gitlab.gnome.org/jwestman/blueprint-compiler.git $@
+
+# ---
 # For more info about building visit [project repo](https://github.com/IS2-19/RESTClient)
