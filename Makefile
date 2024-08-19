@@ -41,5 +41,19 @@ install-blueprints:$(BlueprintsSourceDir)
 $(BlueprintsSourceDir): 
 	git clone https://gitlab.gnome.org/jwestman/blueprint-compiler.git $@
 
+# - `install-sourceview` - installs Gtk.SouirceView component
+install-sourceview:
+
+SourceviewSourceDir := /tmp/sourceview
+install-sourceview: $(SourceviewSourceDir)
+	cd $(SourceviewSourceDir) && \
+	mkdir -p build && \
+  meson build && \
+  cd build && \
+  pkexec ninja -C $(SourceviewSourceDir)/build install
+
+$(SourceviewSourceDir):
+	git clone https://gitlab.gnome.org/GNOME/gtksourceview $@
+
 # ---
 # For more info about building visit [project repo](https://github.com/IS2-19/RESTClient)
