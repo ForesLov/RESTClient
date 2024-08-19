@@ -1,46 +1,259 @@
 using Gtk 4.0;
 using Adw 1;
-
+// using GtkSource 5;
 Gtk.Box _root {
-    orientation: vertical;
+  orientation: vertical;
+  hexpand: true;
+  vexpand: true;
+  margin-start: 10;
+  margin-end: 10;
 
-    Label {
-        label: _("Cool!");
+  Adw.BreakpointBin {
+    Adw.Breakpoint {
+      condition ("max-width: 500sp")
 
-        styles [
-            "title-1"
-        ]
+      setters {
+        _splitBox.orientation: vertical;
+      }
     }
 
-    Label {
-        label: "Cool!";
+    Box {
+      orientation: vertical;
+
+      Box {
+        orientation: horizontal;
+        hexpand: true;
 
         styles [
-            "title-1"
+          "linked",
+          "pill"
         ]
+
+        Gtk.DropDown _methodsDropdown {
+          styles [
+          ]
+        }
+
+        Entry {
+          hexpand: true;
+          placeholder-text: "http://localhost:1488";
+          text: "http://localhost:{{port}}/some?Key=Value";
+        }
+
+        Button {
+          styles [
+            // "pill",
+            "suggested-action"
+          ]
+
+          Adw.ButtonContent {
+            label: _("Run");
+            icon-name: "media-playback-start-symbolic";
+          }
+        }
+      }
+
+      Box _splitBox {
+        orientation: horizontal;
+
+        ScrolledWindow {
+          hexpand: true;
+          vexpand: true;
+
+          Box _requestBox {
+            orientation: vertical;
+
+            Adw.PreferencesGroup {
+              title: _("Query parameters");
+
+              Adw.EntryRow {
+                [suffix]
+                Button _deleteBtn {
+                  styles [
+                    "destructive-actio",
+                    "flat"
+                  ]
+
+                  Adw.ButtonContent {
+                    icon-name: "edit-delete-symbolic";
+                  }
+                }
+
+                styles [
+                  "numeric"
+                ]
+
+                title: "Key";
+                title-selectable: true;
+                text: "Value";
+              }
+            }
+
+            Adw.PreferencesGroup {
+              title: _("Headers");
+
+              Adw.EntryRow {
+                [suffix]
+                Button {
+                  styles [
+                    "destructive-actio",
+                    "flat"
+                  ]
+
+                  Adw.ButtonContent {
+                    icon-name: "edit-delete-symbolic";
+                  }
+                }
+
+                styles [
+                  "numeric"
+                ]
+
+                title: "Header";
+                title-selectable: true;
+                text: "Value";
+              }
+            }
+
+            Label {
+              styles [
+                "heading"
+              ]
+
+              label: "Body";
+            }
+
+            Box {
+              styles [
+                "card"
+              ]
+
+              TextView {
+                styles [
+                  "monospace",
+                  "inline"
+                ]
+
+                margin-bottom: 10;
+                margin-start: 10;
+                margin-end: 10;
+                margin-top: 10;
+                hexpand: true;
+
+                buffer: TextBuffer {
+                  text: "{'id': 'some id'}";
+                };
+              }
+            }
+          }
+        }
+
+        Gtk.Separator {
+          styles [
+            "spacer"
+          ]
+        }
+
+        ScrolledWindow {
+          hexpand: true;
+          vexpand: true;
+
+          Box _responseBox {
+            orientation: vertical;
+
+            Adw.PreferencesGroup {
+              title: _("Headers");
+
+              Adw.ActionRow {
+                styles [
+                  "numeric",
+                  "property"
+                ]
+
+                title: "Response-Type:";
+                title-selectable: true;
+                subtitle: "application/json";
+              }
+
+              Adw.ActionRow {
+                styles [
+                  "numeric",
+                  "property"
+                ]
+
+                title: "Date:";
+                title-selectable: true;
+                subtitle: "Mon, 19 Aug 2024 12:32:22 GMT";
+              }
+
+              Adw.ActionRow {
+                styles [
+                  "numeric",
+                  "property"
+                ]
+
+                title: "Content-Length:";
+                title-selectable: true;
+                subtitle: "200";
+              }
+            }
+
+            Adw.PreferencesGroup {
+              title: _("Cookies");
+
+              Adw.ExpanderRow {
+                styles [
+                  "numeric"
+                ]
+
+                title: "SomeIdentity";
+
+                Adw.ActionRow {
+                  styles [
+                    "property"
+                  ]
+
+                  title: "Value";
+                  subtitle: "887997c7456141d682dccb4d634a8e572dc8df8051dbb551e8bad7472a40b8a7";
+                }
+
+                Adw.ActionRow {
+                  styles [
+                    "property"
+                  ]
+
+                  title: "Expires at";
+                  subtitle: "Mon, 19 Aug 2024 12:32:22 GMT";
+                }
+              }
+
+              Adw.ExpanderRow {
+                styles [
+                  "numeric"
+                ]
+
+                title: "Another-cookie";
+              }
+            }
+          }
+        }
+
+        /* Box {
+          hexpand: true;
+
+          GtkSource.View {
+            tab-width: 2;
+            auto-indent: true;
+            show-line-numbers: true;
+
+            styles [
+              "view",
+              "frame",
+              "monospace"
+            ]
+          }
+        } */
+      }
     }
-
-    Label {
-        label: "Cool!";
-
-        styles [
-            "title-1"
-        ]
-    }
-
-    Label {
-        label: "Cool!";
-
-        styles [
-            "title-1"
-        ]
-    }
-
-    Label {
-        label: "Cool!";
-
-        styles [
-            "title-1"
-        ]
-    }
+  }
 }

@@ -15,6 +15,8 @@ public class MainWindow : Adw.ApplicationWindow
 
     [Connect]
     private readonly OverlaySplitView _splitView;
+    [Connect]
+    private readonly Box _contentBox;
 
     private MainWindow(Gtk.Builder builder)
         : base(builder.GetPointer("_root"), NotOwnReference)
@@ -27,6 +29,7 @@ public class MainWindow : Adw.ApplicationWindow
         {
             _splitView.ShowSidebar = true;
         };
+        _contentBox.Append(RequestView.New());
 
 
 
