@@ -2,9 +2,9 @@ using Gtk 4.0;
 using Adw 1;
 
 Adw.ApplicationWindow _root {
-  width-request: 800;
+  width-request: 400;
   height-request: 500;
-  // default-width: 600;
+  default-width: 800;
   Adw.Breakpoint {
     condition ("max-width: 500sp")
 
@@ -41,7 +41,10 @@ Adw.ApplicationWindow _root {
           }
         }
       }
-
+      Box _contentBox{
+        hexpand: true;
+        vexpand: true;
+      }
       /* Adw.TabBar {
         styles [
           "inline"
