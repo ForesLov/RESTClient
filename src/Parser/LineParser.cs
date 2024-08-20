@@ -16,22 +16,29 @@ public class LineParser
     public List <string> comments = new List <string>();
     public List <string> requestData = new List <string>();
     public string requestInterrupt = "";
-    void Parse(string Line )
+    string Parse(string Line )
     {
-        if (string.IsNullOrEmpty(Line))
+        if (!string.IsNullOrEmpty(Line))
         {
             if (Line.StartsWith("#") || Line.StartsWith("//"))
             {
                 comments.Add(Line);
+                return "Is commentary";
             }
             else if(Line.StartsWith("###")) 
             {
                 requestInterrupt = Line;
+                return "Request interrupt";
             }
             else
             {
                 requestData.Add(Line);
+                return "Is request data";
             }
+        }
+        else
+        {
+            return "Line is empty or null";
         }
     }
 }
