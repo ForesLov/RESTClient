@@ -9,36 +9,37 @@ namespace RestClient.Parser;
 public class LineParser
 {
     private string Line;
+    public List <string> comments = new List <string>();
+    public List <string> requestData = new List <string>();
+    public string requestInterrupt = "//Request interrupt!";
     public LineParser(string line) 
     { 
         Line = line;
     }
-    public List <string> comments = new List <string>();
-    public List <string> requestData = new List <string>();
-    public string requestInterrupt = "";
-    string Parse(string Line )
+    
+    public List<string> Parse(string Line)
     {
         if (!string.IsNullOrEmpty(Line))
         {
             if (Line.StartsWith("#") || Line.StartsWith("//"))
             {
                 comments.Add(Line);
-                return "Is commentary";
+                return comments;
             }
-            else if(Line.StartsWith("###")) 
+            if (Line.StartsWith("###"))
             {
-                requestInterrupt = Line;
-                return "Request interrupt";
+                comments.Add(Line + "\n" + requestInterrupt);
+                return comments;
             }
             else
-            {
+            { 
                 requestData.Add(Line);
-                return "Is request data";
+                return requestData;
             }
         }
         else
         {
-            return "Line is empty or null";
+            return null;
         }
     }
 }
