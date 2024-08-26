@@ -15,12 +15,25 @@ namespace RestClient.Parser
         }
         public string[] files;
         
-        public void Scan(int level = 2)
+        /*public void Scan(int level = 2)
         {
             if (Directory.Exists(path))
             {
                 files = (string[])Directory.GetFiles(path, "*.http").Where(f => f.Split(new char[] { '/' }).Count() <= level + path.Split(new char[] { '/' }).Count());
             }
+        }*/
+        public string[] Scan(int level = 2)
+        {
+            if (Directory.Exists(path))
+            {
+                var localPath = (string[])Directory.GetDirectories(path).Where(x => x.Split('/').Count() <= level + path.Split('/').Count());
+                foreach (var directory in localPath)
+                {
+                    files = (string[])Directory.GetFiles(directory, "*.http", SearchOption.TopDirectoryOnly);
+                }
+                return files;
+            }
+            return null;
         }
     }
 }
