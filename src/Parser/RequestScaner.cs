@@ -26,10 +26,10 @@ namespace RestClient.Parser
         {
             if (Directory.Exists(path))
             {
-                var localPath = (string[])Directory.GetDirectories(path).Where(x => x.Split('/').Count() <= level + path.Split('/').Count());
+                var localPath = Directory.GetDirectories(path).Where(x => x.Split('\\').Count() <= level + path.Split('\\').Count());
                 foreach (var directory in localPath)
                 {
-                    files = (string[])Directory.GetFiles(directory, "*.http", SearchOption.TopDirectoryOnly);
+                    files = Directory.GetFiles(directory, "*.http", SearchOption.TopDirectoryOnly);
                 }
                 return files;
             }
