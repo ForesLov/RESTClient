@@ -11,12 +11,12 @@ namespace Parser.Test
         [Fact]
         void TestScanner()
         {
-            string path = "E:\\ForesLov\\RESTClient\\examples";
+            string path = "E:\\ForesLov\\RESTClient\\examples\\";
             RequestScaner scaner = new RequestScaner(path);
             string[] files = scaner.Scan();
             string[] controlData = { "E:\\ForesLov\\RESTClient\\examples\\v1\\some.http", "E:\\ForesLov\\RESTClient\\examples\\v2\\another.http", "E:\\ForesLov\\RESTClient\\examples\\v2\\some.http" };
 
-            Assert.Equal(files, controlData);
+            Assert.Equal(controlData, files);
         }
 
     }
