@@ -13,7 +13,7 @@ namespace RestClient.Parser
         {
             path = Path;
         }
-        public string[] files;
+        
         
         /*public void Scan(int level = 2)
         {
@@ -24,14 +24,15 @@ namespace RestClient.Parser
         }*/
         public string[] Scan(int level = 2)
         {
+            List<string> files = new List<string>();
             if (Directory.Exists(path))
             {
-                var localPath = Directory.GetDirectories(path).Where(x => x.Split('\\').Count() <= level + path.Split('\\').Count());
+                var localPath = Directory.GetDirectories(path).Where(x => x.Split('/').Count() <= level + path.Split('/').Count());
                 foreach (var directory in localPath)
                 {
-                    files = Directory.GetFiles(directory, "*.http", SearchOption.TopDirectoryOnly);
+                    files.AddRange( Directory.GetFiles(directory, "*.http", SearchOption.TopDirectoryOnly));
                 }
-                return files;
+                return files.ToArray();
             }
             return null;
         }
