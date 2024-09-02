@@ -28,4 +28,7 @@
     <ProjectReference Include="..\Parser\Parser.csproj" />
   </ItemGroup>
 
+    <Target Name="Fuck you" BeforeTargets="PreBuildEvent">
+		<Exec Command="cp ../../examples/ $(OutDir) -r" />
+	</Target>
 </Project>

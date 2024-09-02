@@ -14,7 +14,7 @@ namespace Parser.Test
         List<string> BodiesControl = new List<string>();
         List<string> Bodies = new List<string>();
         [Fact]
-        void TestBodie()
+        void TestBodies()
         {
             for (int i = 0; i < testData.Length - 1; i++)
             {
