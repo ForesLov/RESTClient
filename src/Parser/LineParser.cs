@@ -8,13 +8,13 @@ namespace RestClient.Parser;
 
 public class LineParser
 {
-    private string Line;
+
     public List <string> comments = new List <string>();
     public List <string> requestData = new List <string>();
     public string requestInterrupt = "//Request interrupt!";
-    public LineParser(string line) 
+    public LineParser() 
     { 
-        Line = line;
+
     }
     
     public List<string> Parse(string Line)
