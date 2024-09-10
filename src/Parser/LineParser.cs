@@ -15,43 +15,41 @@ public class LineParser
     { 
         _line = Line;
     }
-    Commentary commentary = new Commentary();
-    RequestData requestData = new RequestData();
-    public void Parse()
+    public ParsedData? Parse()
     {
-        if (!string.IsNullOrEmpty(_line))
+        if (string.IsNullOrEmpty(_line))
         {
-            if (_line.StartsWith("#") || _line.StartsWith("//"))
-            {
-                IsCommentary(commentary, false);
-            }
-            if (_line.StartsWith("###"))
-            {
-                IsCommentary(commentary, true);
-            }
-            else
-            {
-                IsRequestData(requestData);
-            }
+            return null;
         }
+        if (_line.StartsWith("#") || _line.StartsWith("//"))
+            return new Commentary(_line, false);
+        if (_line.StartsWith("###"))
+            return new Commentary(_line, true);
+        else
+            return new RequestData(_line);
     }
-    public Commentary IsCommentary(Commentary commentary, bool IsInterrupt)
+}
+public abstract class ParsedData
+{
+
+}
+public class Commentary : ParsedData
+{
+    public Commentary(string commentaryText, bool isInterrupt = false)
     {
-        commentary.CommentaryText.Add(_line, IsInterrupt);
-        return commentary;
-    }
-    public RequestData IsRequestData(RequestData requestData)
-    {
-        requestData.RequestDataText.Add(_line);
-        return requestData;
+        CommentaryText = commentaryText;
+        IsInterrupt = isInterrupt;
     }
 
-    public class Commentary
+    public readonly string CommentaryText;
+    public readonly bool IsInterrupt = false;
+}
+public class RequestData : ParsedData
+{
+    public readonly string RequestDataText;
+
+    public RequestData(string requestDataText)
     {
-        public Dictionary<string, bool> CommentaryText;
-    }
-    public class RequestData
-    {
-        public List<string> RequestDataText;
+        RequestDataText = requestDataText;
     }
 }
