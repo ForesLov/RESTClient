@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,38 +9,49 @@ namespace RestClient.Parser;
 
 public class LineParser
 {
+    private readonly string _line;
 
-    public List <string> comments = new List <string>();
-    public List <string> requestData = new List <string>();
-    public string requestInterrupt = "//Request interrupt!";
-    public LineParser() 
+    public LineParser(string Line)
     { 
-
+        _line = Line;
     }
-    
-    public List<string> Parse(string Line)
+    Commentary commentary = new Commentary();
+    RequestData requestData = new RequestData();
+    public void Parse()
     {
-        if (!string.IsNullOrEmpty(Line))
+        if (!string.IsNullOrEmpty(_line))
         {
-            if (Line.StartsWith("#") || Line.StartsWith("//"))
+            if (_line.StartsWith("#") || _line.StartsWith("//"))
             {
-                comments.Add(Line);
-                return comments;
+                IsCommentary(commentary, false);
             }
-            if (Line.StartsWith("###"))
+            if (_line.StartsWith("###"))
             {
-                comments.Add(Line + "\n" + requestInterrupt);
-                return comments;
+                IsCommentary(commentary, true);
             }
             else
-            { 
-                requestData.Add(Line);
-                return requestData;
+            {
+                IsRequestData(requestData);
             }
         }
-        else
-        {
-            return null;
-        }
+    }
+    public Commentary IsCommentary(Commentary commentary, bool IsInterrupt)
+    {
+        commentary.CommentaryText.Add(_line, IsInterrupt);
+        return commentary;
+    }
+    public RequestData IsRequestData(RequestData requestData)
+    {
+        requestData.RequestDataText.Add(_line);
+        return requestData;
+    }
+
+    public class Commentary
+    {
+        public Dictionary<string, bool> CommentaryText;
+    }
+    public class RequestData
+    {
+        public List<string> RequestDataText;
     }
 }
