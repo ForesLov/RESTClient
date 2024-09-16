@@ -6,7 +6,7 @@ namespace RestClient.Backend;
 public class HistoryProvider : IHistoryProvider
 {
     private const string HistoryFileName = ".ru.is2-19.rest-client_history";
-    private FileInfo HistoryFile
+    public FileInfo HistoryFile
     {
         get
         {
@@ -23,33 +23,31 @@ public class HistoryProvider : IHistoryProvider
 
     private IEnumerable<DirectoryInfo> GetHistory()
     {
-        var stream = HistoryFile.OpenText();
-        while (!stream.EndOfStream)
+        using var sr = new StreamReader(HistoryFile.FullName);
+        while (!sr.EndOfStream)
         {
-            var dir = ReadDir(stream);
+            var dir = sr.ReadLine();
 
             if (dir is not null)
-                yield return dir;
+                yield return new(dir);
         }
     }
 
     public DirectoryInfo? GetLast()
     {
-        var stream = HistoryFile.OpenText();
+        using var stream = HistoryFile.OpenText();
         return GetHistory().LastOrDefault();
     }
 
     public Task AppendAsync(DirectoryInfo dir)
     {
-        var fs = HistoryFile.OpenWrite();
-        var writer = new StreamWriter(fs);
+        using var writer = new StreamWriter(HistoryFile.FullName, true);
 
         return writer.WriteLineAsync(dir.FullName);
     }
     public void Append(DirectoryInfo dir)
     {
-        var fs = HistoryFile.OpenWrite();
-        var writer = new StreamWriter(fs);
+        using var writer = new StreamWriter(HistoryFile.FullName, true);
 
         writer.WriteLine(dir.FullName);
     }
