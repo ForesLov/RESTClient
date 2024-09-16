@@ -5,6 +5,7 @@ Adw.ApplicationWindow _root {
   width-request: 400;
   height-request: 500;
   default-width: 800;
+
   Adw.Breakpoint {
     condition ("max-width: 500sp")
 
@@ -41,10 +42,12 @@ Adw.ApplicationWindow _root {
           }
         }
       }
-      Box _contentBox{
+
+      Box _contentBox {
         hexpand: true;
         vexpand: true;
       }
+
       /* Adw.TabBar {
         styles [
           "inline"
@@ -80,79 +83,81 @@ Adw.ApplicationWindow _root {
           }
         }
 
-        content: Gtk.Box {
-          orientation: vertical;
-          spacing: 12;
-          margin-start: 10;
-          margin-end: 10;
+        content: ScrolledWindow {
+          Gtk.Box {
+            orientation: vertical;
+            spacing: 12;
+            margin-start: 10;
+            margin-end: 10;
 
-          Gtk.ListBox {
-            styles [
-              "boxed-list"
-            ]
+            Gtk.ListBox {
+              styles [
+                "boxed-list"
+              ]
 
-            Adw.ExpanderRow {
-              title: "General";
-              subtitle: "FILE: ./MyAwesomeApi.http";
+              Adw.ExpanderRow {
+                title: "General";
+                subtitle: "FILE: ./MyAwesomeApi.http";
 
-              Adw.ActionRow {
-                title: "Ping";
-                subtitle: "GET localhost:{{port}}/ping";
+                Adw.ActionRow {
+                  title: "Ping";
+                  subtitle: "GET localhost:{{port}}/ping";
+                }
+
+                Adw.ActionRow {
+                  title: "Status";
+                  subtitle: "POST localhost:{{post}}/status";
+                }
               }
 
-              Adw.ActionRow {
-                title: "Status";
-                subtitle: "POST localhost:{{post}}/status";
-              }
-            }
-
-            Adw.ExpanderRow {
-              title: "Utils";
-              subtitle: "FILE: ./utils.http";
-            }
-          }
-
-          Adw.PreferencesGroup {
-            title: "v1";
-            description: "Directory: ./v1/";
-
-            Adw.ExpanderRow {
-              title: "Users";
-              subtitle: "File: ./v1/users.http";
-
-              Adw.ActionRow {
-                title: "Get all";
-                subtitle: "GET localhost:{{port}}/users/";
-              }
-            }
-          }
-
-          Adw.PreferencesGroup {
-            title: _("v2");
-            description: _("Directory: ./v2/");
-
-            Adw.ExpanderRow {
-              title: _("Users");
-              subtitle: "File: ./v2/users.http";
-
-              Adw.ActionRow {
-                title: "Get all";
-                subtitle: _("GET localhost:{{port}}/users/all");
-              }
-
-              Adw.ActionRow {
-                title: _("Delete");
-                subtitle: _("DELETE localhost:{{port}}/users/delete?id=12");
+              Adw.ExpanderRow {
+                title: "Utils";
+                subtitle: "FILE: ./utils.http";
               }
             }
 
-            Adw.ExpanderRow {
-              title: "Items";
-              subtitle: "File: ./v2/items.http";
+            Adw.PreferencesGroup {
+              title: "v1";
+              description: "Directory: ./v1/";
 
-              Adw.ActionRow {
-                title: "Edit";
-                subtitle: "POST localhost:{{port}}/items/edit";
+              Adw.ExpanderRow {
+                title: "Users";
+                subtitle: "File: ./v1/users.http";
+
+                Adw.ActionRow {
+                  title: "Get all";
+                  subtitle: "GET localhost:{{port}}/users/";
+                }
+              }
+            }
+
+            Adw.PreferencesGroup {
+              title: _("v2");
+              description: _("Directory: ./v2/");
+
+              Adw.ExpanderRow {
+                title: _("Users");
+                subtitle: "File: ./v2/users.http";
+
+                Adw.ActionRow {
+                  title: "Get all";
+                  subtitle: _("GET localhost:{{port}}/users/all");
+                }
+
+                Adw.ActionRow {
+                  title: _("Delete");
+                  subtitle: _("DELETE localhost:{{port}}/users/delete?id=12");
+                }
+              }
+
+              Adw.ExpanderRow {
+                title: "Items";
+                subtitle: "File: ./v2/items.http";
+
+                Adw.ActionRow {
+                  title: "Edit";
+                  subtitle: "POST localhost:{{port}}/items/edit";
+                }
               }
             }
           }

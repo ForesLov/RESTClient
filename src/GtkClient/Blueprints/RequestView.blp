@@ -1,12 +1,15 @@
 using Gtk 4.0;
 using Adw 1;
-// using GtkSource 5;
+using GtkSource 5;
+
 Gtk.Box _root {
   orientation: vertical;
   hexpand: true;
   vexpand: true;
-  margin-start: 10;
-  margin-end: 10;
+  margin-start: 15;
+  margin-end: 15;
+  margin-top: 10;
+  margin-bottom: 10;
 
   Adw.BreakpointBin {
     Adw.Breakpoint {
@@ -54,6 +57,7 @@ Gtk.Box _root {
       }
 
       Box _splitBox {
+        margin-top: 20;
         orientation: horizontal;
 
         ScrolledWindow {
@@ -62,6 +66,14 @@ Gtk.Box _root {
 
           Box _requestBox {
             orientation: vertical;
+
+            Label {
+              label: _("Request options:");
+
+              styles [
+                "title-1"
+              ]
+            }
 
             Adw.PreferencesGroup {
               title: _("Query parameters");
@@ -161,6 +173,14 @@ Gtk.Box _root {
           Box _responseBox {
             orientation: vertical;
 
+            Label {
+              label: _("Response data:");
+
+              styles [
+                "title-1"
+              ]
+            }
+
             Adw.PreferencesGroup {
               title: _("Headers");
 
@@ -235,24 +255,45 @@ Gtk.Box _root {
                 title: "Another-cookie";
               }
             }
+
+            Label {
+              styles [
+                "heading"
+              ]
+
+              margin-top: 10;
+              label: _("Body");
+            }
+
+            Box {
+              hexpand: true;
+              margin-top: 10;
+
+              styles [
+                "card"
+              ]
+
+              GtkSource.View {
+                margin-bottom: 10;
+                margin-top: 10;
+                margin-end: 10;
+                margin-start: 10;
+                hexpand: true;
+                tab-width: 2;
+                auto-indent: true;
+                show-line-numbers: true;
+
+                styles [
+                  "monospace"
+                ]
+
+                buffer: TextBuffer {
+                  text: "Some code\nsome code";
+                };
+              }
+            }
           }
         }
-
-        /* Box {
-          hexpand: true;
-
-          GtkSource.View {
-            tab-width: 2;
-            auto-indent: true;
-            show-line-numbers: true;
-
-            styles [
-              "view",
-              "frame",
-              "monospace"
-            ]
-          }
-        } */
       }
     }
   }
