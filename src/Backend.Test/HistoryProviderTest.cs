@@ -44,7 +44,7 @@ public class HistoryProviderTest
 
         var last = provider.GetLast();
         last.Should().NotBeNull();
-        last.FullName.Should().BeEquivalentTo(dir2.FullName);
+        last?.FullName.Should().BeEquivalentTo(dir2.FullName);
         provider.GetLast10().Select(h => h.FullName).Should().BeEquivalentTo([dir.FullName, dir2.FullName]);
     }
 }
