@@ -10,39 +10,13 @@ namespace Parser.Test
     {
 
 
-        [Fact]
-        void ParseCommentsTest()
-        {
-            string[] testData = { "//", "#", "###" };
-            object[] controlData =
-            {
-                new Comment("//"),
-                new Comment("#"),
-                new Comment("###", true),
-            };
-            object[] parsedData = new object[testData.Length];
-            for (int i = 0; i <= testData.Length - 1; i++)
-            {
-                parsedData[i] = new LineParser(testData[i]).Parse();
-            }
+        [Theory, InlineData("//", false), InlineData("#", false), InlineData("###", true)]
 
-            Assert.Equal(controlData, parsedData);
-        }
-        [Fact]
-        void PaseLineInterruptTest()
+        void ParseCommentsTest( string value, bool IsInterrupt)
         {
-            string[] testData = { "#", "###" };
-            Comment[] controlData =
-            {
-                new Comment("#"),
-                new Comment("###", true),
-            };
-            object[] parsedData = new object[testData.Length];
-            for (int i = 0; i < testData.Length; i++)
-            {
-                parsedData[i] = new LineParser(testData[i]).Parse();
-            }
-            Assert.Equal(controlData, parsedData);
+            var expectedData = new Comment(value, IsInterrupt);
+            LineParser lineParser = new LineParser(value);
+            Assert.Equal(expectedData, lineParser.Parse());
         }
         [Fact]
         void ParseRequestDataTest()
