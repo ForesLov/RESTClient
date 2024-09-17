@@ -21,10 +21,10 @@ public class LineParser
         {
             return null;
         }
-        if (_line.StartsWith("#") || _line.StartsWith("//"))
-            return new Commentary(_line, false);
         if (_line.StartsWith("###"))
-            return new Commentary(_line, true);
+            return new Comment(_line, true);
+        if (_line.StartsWith("#") || _line.StartsWith("//"))
+            return new Comment(_line, false);
         else
             return new RequestData(_line);
     }
@@ -33,16 +33,16 @@ public abstract class ParsedData
 {
 
 }
-public class Commentary : ParsedData
+public class Comment : ParsedData
 {
-    public Commentary(string commentaryText, bool isInterrupt = false)
+    public Comment(string commentaryText, bool isInterrupt = false)
     {
         CommentaryText = commentaryText;
         IsInterrupt = isInterrupt;
     }
 
     public readonly string CommentaryText;
-    public readonly bool IsInterrupt = false;
+    public readonly bool IsInterrupt;
 }
 public class RequestData : ParsedData
 {
