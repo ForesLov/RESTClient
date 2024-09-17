@@ -8,48 +8,49 @@ namespace Parser.Test
 {
     public class LineParserTest
     {
-        string [] testData = { "//", "#", "GET /index.html HTTP/1.1" };
-        List<string> CommentsControl = new List<string>();
-        List<string> Comments = new List<string>();
-        List<string> BodiesControl = new List<string>();
-        List<string> Bodies = new List<string>();
+
+
         [Fact]
-        void TestBodies()
+        void ParseCommentsTest()
         {
-            for (int i = 0; i < testData.Length - 1; i++)
+            string[] testData = { "//", "#", "###" };
+            object[] controlData =
             {
-                if (i < 2)
-                    CommentsControl.Add(testData[i]);
-                else
-                    BodiesControl.Add(testData[i]);
-            }
-            LineParser lineParser = new LineParser();
-            for (int i = 0;i < testData.Length-1;i++)
+                new Comment("//"),
+                new Comment("#"),
+                new Comment("###", true),
+            };
+            object[] parsedData = new object[testData.Length];
+            for (int i = 0; i <= testData.Length - 1; i++)
             {
-                lineParser.Parse(testData[i]);
+                parsedData[i] = new LineParser(testData[i]).Parse();
             }
-            Bodies = lineParser.requestData;
-            
-            Assert.Equal(Bodies, BodiesControl);
-            
+
+            Assert.Equal(controlData, parsedData);
         }
         [Fact]
-        void TestComments()
+        void PaseLineInterruptTest()
         {
-            for (int i = 0; i < testData.Length - 1; i++)
+            string[] testData = { "#", "###" };
+            Comment[] controlData =
             {
-                if (i < 2)
-                    CommentsControl.Add(testData[i]);
-                else
-                    BodiesControl.Add(testData[i]);
-            }
-            LineParser lineParser = new LineParser();
-            for (int i = 0; i < testData.Length - 1; i++)
+                new Comment("#"),
+                new Comment("###", true),
+            };
+            object[] parsedData = new object[testData.Length];
+            for (int i = 0; i < testData.Length; i++)
             {
-                lineParser.Parse(testData[i]);
+                parsedData[i] = new LineParser(testData[i]).Parse();
             }
-            Comments = lineParser.comments;
-            Assert.Equal(Comments, CommentsControl);
+            Assert.Equal(controlData, parsedData);
+        }
+        [Fact]
+        void ParseRequestDataTest()
+        {
+            string testData = "GET /index.html HTTP/1.1";
+            RequestData controlData = new RequestData(testData);
+            var parsedData = new LineParser(testData).Parse();
+            Assert.Equal(controlData, parsedData);
         }
     }
 }
