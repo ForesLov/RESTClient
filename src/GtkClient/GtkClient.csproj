@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AppId>ru.is2-19.rest-client</AppId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +14,15 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="echo Compiling extra resources..." />
-    <Exec Command="blueprint-compiler batch-compile ./Blueprints ./Blueprints ./Blueprints/*.blp" />
+    <Message Text="Compiling blueprints files" />
     <Exec
-      Command="glib-compile-resources --sourcedir=Resources Resources/$(AppId).gresource.xml --target=$(OutDir)$(AppId).gresource" />
+      Command="blueprint-compiler batch-compile $(OutDir)Blueprints ./Blueprints ./Blueprints/*.blp"
+      CustomErrorRegularExpression="[.\s]" />
+    <Message Text="Compiling GLib resources" />
+    <Exec
+      Command="glib-compile-resources --sourcedir=Resources Resources/$(AppId).gresource.xml --target=$(OutDir)$(AppId).gresource">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GLibCompilerOutput" />
+    </Exec>
     <!-- <Exec Command="while read lang_code; do \&#xA;  mkdir -p $(OutDir)${lang_code}; \&#xA;
     msgfmt ../NickvisionTagger.Shared/Resources/po/${lang_code}.po -o
     $(OutDir)${lang_code}/tagger.mo; \&#xA;done %3C ../NickvisionTagger.Shared/Resources/po/LINGUAS"
@@ -25,12 +31,9 @@
 
   <Target Name="EmbedUIFiles" BeforeTargets="BeforeResGen">
     <ItemGroup>
-      <EmbeddedResource Include="Blueprints/*.ui" Type="Non-Resx" WithCulture="false" />
+      <EmbeddedResource Include="$(OutDir)/Blueprints/*.ui" Type="Non-Resx" WithCulture="false" />
     </ItemGroup>
   </Target>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rm ./Blueprints/*.ui" />
-  </Target>
 
 </Project>

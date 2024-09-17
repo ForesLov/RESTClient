@@ -20,11 +20,11 @@ public class BuilderHelper
         var elements = xml.GetElementsByTagName("*");
         foreach (XmlElement element in elements)
         {
-            if (element.HasAttribute("translatable"))
+            // TODO: Finnish translation
+            /*if (element.HasAttribute("translatable"))
             {
                 element.RemoveAttribute("translatable");
-                // TODO: Finnish translation
-                /* if (element.HasAttribute("context"))
+                 if (element.HasAttribute("context"))
                 {
                     var context = element.GetAttribute("context");
                     element.InnerText = _p(context, element.InnerText);
@@ -32,8 +32,8 @@ public class BuilderHelper
                 else
                 {
                     element.InnerText = _(element.InnerText);
-                } */
-            }
+                } 
+            }*/
         }
         return Gtk.Builder.NewFromString(xml.OuterXml, -1);
     }

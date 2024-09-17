@@ -1,39 +1,19 @@
-﻿using Adw;
+﻿using System.Reflection;
+using Adw;
 using Gio;
 using Gtk;
 using RestClient.GtkClient;
+using File = System.IO.File;
+using System.Runtime.InteropServices;
 
 const string AppId = "ru.is2-19.rest-client";
 var app = Adw.Application.New(AppId, ApplicationFlags.DefaultFlags);
 
-var window = new Adw.ApplicationWindow { DefaultWidth = 600, };
-
-var splitView = new OverlaySplitView
-{
-    CssClasses = ["flat"],
-    Content = GetContent(),
-    Sidebar = GetSidebarContent(),
-    Collapsed = false,
-    ShowSidebar = true,
-    // PinSidebar = true,
-    // ShowSidebar = true
-};
-splitView.SetMinSidebarWidth(200);
-
-/* var view = new ToolbarView
-{
-    TopBarStyle = ToolbarStyle.Raised,
-    Content = splitView,
-    CssClasses = ["flat"],
-}; */
-// view.AddTopBar(header);
-var breakpoint = Breakpoint.New(Adw.BreakpointCondition.Parse("max-width: 400sp"));
-breakpoint.AddSetter(splitView, "collapsed", new GObject.Value(true));
-window.SetContent(splitView);
-window.AddBreakpoint(breakpoint);
+LoadGResources();
 
 app.OnActivate += (s, args) =>
 {
+    SourceView.Init();
     var mainWindow = MainWindow.New();
     app.AddWindow(mainWindow);
     mainWindow.Present();
@@ -41,47 +21,23 @@ app.OnActivate += (s, args) =>
 
 app.RunWithSynchronizationContext(args);
 
-Widget GetContent()
+void LoadGResources()
 {
-    var label = Label.New("Label");
-    label.AddCssClass("title-1");
-
-    var box = Box.New(Orientation.Vertical, 12);
-    box.Append(GetHeaderBar());
-    box.Append(label);
-
-    return box;
-}
-
-Widget GetSidebarContent()
-{
-    var list = ListBox.New();
-    list.AddCssClass("boxed-list");
-    for (int i = 0; i < 10; i++)
+    var file = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location ?? "") ?? ".") + $"/{AppId}.gresource";
+    if (File.Exists(file))
     {
-        var row = new ActionRow { Title = "Fuck", Subtitle = "That's the war going on" };
-        list.Append(row);
+        Gio.Functions.ResourcesRegister(Gio.Functions.ResourceLoad(file));
     }
-    var box = Box.New(Orientation.Vertical, 12);
-    box.Append(list);
 
-    box.SetMarginStart(12);
-    box.SetMarginEnd(12);
-    box.SetMarginTop(12);
-    box.SetMarginBottom(12);
-
-    return box;
+    // TODO: Load globaly stored resource file, currently loads only from output dir
 }
 
-void LoadGResources() { }
-
-Adw.HeaderBar GetHeaderBar()
+public partial class SourceView
 {
-    var header = new Adw.HeaderBar
-    {
-        TitleWidget = new WindowTitle { Title = "REST client", },
-        CssClasses = ["flat"]
-    };
+    [LibraryImport("libgtksourceview-5.so.0")]
+    private static partial void gtk_source_init();
 
-    return header;
+    private SourceView() { }
+
+    public static void Init() => gtk_source_init();
 }
