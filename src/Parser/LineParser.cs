@@ -35,6 +35,16 @@ public abstract class ParsedData
 }
 public class Comment : ParsedData
 {
+    public override bool Equals(object? obj)
+    {
+        if (obj is Comment c)
+            return Equals(c);
+        return false;
+    }
+    public bool Equals(Comment obj)
+    {
+        return CommentaryText == obj.CommentaryText && IsInterrupt == obj.IsInterrupt;
+    }
     public Comment(string commentaryText, bool isInterrupt = false)
     {
         CommentaryText = commentaryText;
@@ -46,10 +56,20 @@ public class Comment : ParsedData
 }
 public class RequestData : ParsedData
 {
-    public readonly string RequestDataText;
+    public override bool Equals(object? obj)
+    {
+        if (obj is RequestData c)
+            return Equals(c);
+        return false;
+    }
+    public bool Equals(RequestData obj)
+    {
+        return Text == obj.Text;
+    }
+    public readonly string Text;
 
     public RequestData(string requestDataText)
     {
-        RequestDataText = requestDataText;
+        Text = requestDataText;
     }
 }
