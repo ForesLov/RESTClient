@@ -1,5 +1,3 @@
-using RestClient.Parser.Models;
-
 namespace RestClient.Parser;
 
 public interface IFileParser
@@ -8,7 +6,9 @@ public interface IFileParser
 }
 public interface IDirectoryParser
 {
-    RequestsDirectory ParseDir(DirectoryInfo dir);
+    IEnumerable<ParsedFileData> ParseDir(DirectoryInfo dir);
 }
-
-public record ParsedFileData(IEnumerable<Models.Request> Requests, Models.RequestsContext Context);
+/// <summary>
+/// Представляет модель данных распаршенного файла.
+/// </summary>
+public record ParsedFileData(IEnumerable<HttpRequestMessage> Requests, Models.RequestsContext Context);
