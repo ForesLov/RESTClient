@@ -2,7 +2,6 @@ using RestClient.Backend.Contracts;
 
 namespace RestClient.Backend;
 
-
 public class HistoryProvider : IHistoryProvider
 {
     private const string HistoryFileName = ".ru.is2-19.rest-client_history";
@@ -45,12 +44,14 @@ public class HistoryProvider : IHistoryProvider
 
         return writer.WriteLineAsync(dir.FullName);
     }
+
     public void Append(DirectoryInfo dir)
     {
         using var writer = new StreamWriter(HistoryFile.FullName, true);
 
         writer.WriteLine(dir.FullName);
     }
+
     public void Delete(DirectoryInfo dir)
     {
         var newHistory = GetHistory().Distinct().Except([dir]);

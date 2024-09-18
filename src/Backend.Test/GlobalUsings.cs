@@ -1,3 +1,3 @@
-global using Xunit;
-global using RestClient.Backend;
 global using FluentAssertions;
+global using RestClient.Backend;
+global using Xunit;

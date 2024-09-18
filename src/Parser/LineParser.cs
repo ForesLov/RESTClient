@@ -53,6 +53,11 @@ public class Comment : ParsedData
 
     public readonly string CommentaryText;
     public readonly bool IsInterrupt;
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
 }
 public class RequestData : ParsedData
 {
@@ -71,5 +76,10 @@ public class RequestData : ParsedData
     public RequestData(string requestDataText)
     {
         Text = requestDataText;
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
     }
 }

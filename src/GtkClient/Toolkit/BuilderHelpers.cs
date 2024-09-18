@@ -32,7 +32,7 @@ public class BuilderHelper
                 else
                 {
                     element.InnerText = _(element.InnerText);
-                } 
+                }
             }*/
         }
         return Gtk.Builder.NewFromString(xml.OuterXml, -1);

@@ -15,24 +15,11 @@ public class RequestScanerTest
             new FileInfo("./examples/v2/another.http"),
             new FileInfo("./examples/v2/some.http")
         ];
-
-        // foreach (var f in controlData)
-        // {
-        //     Assert.Contains(f, files);
-        // }
-        //
         files.Should().NotBeEmpty();
         var filesAsStrings = files.Select(f => f.FullName);
         foreach (var c in controlData)
         {
             filesAsStrings.Should().Contain(c.FullName);
         }
-        // Assert.Collection(files, el =>
-        // {
-        //     controlData.Contains(el);
-        // });
-
-        // Assert.Equal(controlData.Select(f => f.FullName), files.Select(f => f.FullName));
     }
-
 }

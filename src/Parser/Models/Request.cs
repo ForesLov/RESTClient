@@ -2,6 +2,9 @@ using System.Text;
 
 namespace RestClient.Parser.Models;
 
+/// <summary>
+/// Probably deprecated
+/// </summary>
 public class Request
 {
     public HttpMethod Method { get; set; }

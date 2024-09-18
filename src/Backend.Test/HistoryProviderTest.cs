@@ -9,6 +9,7 @@ public class HistoryProviderTest
         provider.HistoryFile.Should().NotBeNull();
         provider.HistoryFile.Delete();
     }
+
     [Fact]
     public void HistoryAppendTest()
     {
@@ -29,6 +30,7 @@ public class HistoryProviderTest
 
         text.Should().BeEquivalentTo([dir.FullName, dir2.FullName]);
     }
+
     [Fact]
     public void GetHistoryTest()
     {
@@ -45,6 +47,10 @@ public class HistoryProviderTest
         var last = provider.GetLast();
         last.Should().NotBeNull();
         last?.FullName.Should().BeEquivalentTo(dir2.FullName);
-        provider.GetLast10().Select(h => h.FullName).Should().BeEquivalentTo([dir.FullName, dir2.FullName]);
+        provider
+            .GetLast10()
+            .Select(h => h.FullName)
+            .Should()
+            .BeEquivalentTo([dir.FullName, dir2.FullName]);
     }
 }

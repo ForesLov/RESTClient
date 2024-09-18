@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <AppId>ru.is2-19.rest-client</AppId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>RestClient.GtkClient</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
