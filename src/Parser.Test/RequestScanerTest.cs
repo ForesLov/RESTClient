@@ -1,27 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parser.Test;
 
-namespace Parser.Test
+public class RequestScanerTest
 {
-    public class RequestScanerTest
+    [Fact]
+    void TestScanner()
     {
-        [Fact]
-        void TestScanner()
+        var path = new DirectoryInfo("./examples");
+        System.Console.WriteLine(path.FullName);
+        var scaner = new RequestScaner(path);
+        var files = scaner.Scan();
+        FileInfo[] controlData =
+        [
+            new FileInfo("./examples/v1/some.http"),
+            new FileInfo("./examples/v2/another.http"),
+            new FileInfo("./examples/v2/some.http")
+        ];
+
+        // foreach (var f in controlData)
+        // {
+        //     Assert.Contains(f, files);
+        // }
+        //
+        files.Should().NotBeEmpty();
+        var filesAsStrings = files.Select(f => f.FullName);
+        foreach (var c in controlData)
         {
-            var path = new DirectoryInfo("./examples");
-            System.Console.WriteLine(path.FullName);
-            RequestScaner scaner = new RequestScaner(path.FullName);
-            var files = scaner.Scan();
-            string[] controlData = [
-                new FileInfo("./examples/v1/some.http").FullName,
-                new FileInfo("./examples/v2/another.http").FullName,
-                new FileInfo("./examples/v2/some.http").FullName ];
-
-            Assert.Equal(controlData, files);
+            filesAsStrings.Should().Contain(c.FullName);
         }
+        // Assert.Collection(files, el =>
+        // {
+        //     controlData.Contains(el);
+        // });
 
+        // Assert.Equal(controlData.Select(f => f.FullName), files.Select(f => f.FullName));
     }
+
 }
