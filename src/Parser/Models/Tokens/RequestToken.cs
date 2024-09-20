@@ -4,19 +4,19 @@ namespace RestClient.Parser.Models.Tokens;
 
 public class RequestToken : IRequestToken
 {
-    public readonly string Text;
+    private readonly string _text;
 
-    public RequestToken(string requestDataText)
+    public RequestToken(string text)
     {
-        Text = requestDataText;
+        _text = text;
     }
     public bool Equals(RequestToken obj)
     {
-        return Text == obj.Text;
+        return _text == obj._text;
     }
     public void Execute(HttpRequestMessage request)
     {
-        var words = Text.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var words = _text.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (words.Length < 2)
             throw new Exception("Too small");
 
@@ -29,8 +29,7 @@ public class RequestToken : IRequestToken
             var versionResolver = new HttpVersionResolver();
             request.Version = versionResolver.Resolve(words[2]);
         }
-
-        throw new NotImplementedException(); // TODO: implement
+        // TODO: finnish implementation
     }
 
     #region Overrides
@@ -44,12 +43,12 @@ public class RequestToken : IRequestToken
 
     public override int GetHashCode()
     {
-        return Text.GetHashCode();
+        return _text.GetHashCode();
     }
 
     public override string? ToString()
     {
-        return Text;
+        return _text;
     }
 
     #endregion
