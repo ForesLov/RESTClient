@@ -11,14 +11,16 @@ public class LineParser
     private static Regex HeaderRegex = new("^[\\S]+:[.]*", RegexOptions.Compiled);
     private static Regex CommentRegex = new("^[\\s]*[#]|(\\/\\/)", RegexOptions.Compiled);
 
-    private readonly string _line;
+    private readonly string? _line;
 
-    public LineParser(string line)
+    public LineParser(string? line)
     {
         _line = line;
     }
-    public IToken? Parse()
+    public IToken Parse()
     {
+        if (_line is null)
+            return EmptyToken.Default;
         if (BreakRequestRegex.Match(_line).Success)
             return new BreakRequestToken();
 
@@ -35,5 +37,11 @@ public class LineParser
             return new EmptyLineToken();
 
         return EmptyToken.Default;
+    }
+
+    public static IToken Parse(string? line)
+    {
+        var parser = new LineParser(line);
+        return parser.Parse();
     }
 }
