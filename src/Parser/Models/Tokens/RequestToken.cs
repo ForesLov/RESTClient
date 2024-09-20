@@ -2,7 +2,7 @@ using RestClient.Parser.Contracts;
 
 namespace RestClient.Parser.Models.Tokens;
 
-public class RequestToken : IToken
+public class RequestToken : IRequestToken
 {
     public readonly string Text;
 
@@ -13,6 +13,24 @@ public class RequestToken : IToken
     public bool Equals(RequestToken obj)
     {
         return Text == obj.Text;
+    }
+    public void Execute(HttpRequestMessage request)
+    {
+        var words = Text.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (words.Length < 2)
+            throw new Exception("Too small");
+
+        var methodResolver = new MethodResolver();
+        request.Method = methodResolver.Resolve(words[0]);
+        request.RequestUri = new Uri(words[1]);
+
+        if (words.Length >= 3)
+        {
+            var versionResolver = new HttpVersionResolver();
+            request.Version = versionResolver.Resolve(words[2]);
+        }
+
+        throw new NotImplementedException(); // TODO: implement
     }
 
     #region Overrides
