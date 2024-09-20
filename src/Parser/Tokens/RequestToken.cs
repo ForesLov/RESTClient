@@ -1,6 +1,6 @@
 using RestClient.Parser.Contracts;
 
-namespace RestClient.Parser.Models.Tokens;
+namespace RestClient.Parser.Tokens;
 
 public class RequestToken : IRequestToken
 {
@@ -14,11 +14,16 @@ public class RequestToken : IRequestToken
     {
         return _text == obj._text;
     }
-    public void Execute(HttpRequestMessage request)
+    public ParseState Execute(ParseState state)
     {
+        if (state.RequestInitialized)
+            throw new Exception("Request is already initialized");
+
         var words = _text.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (words.Length < 2)
             throw new Exception("Too small");
+
+        var request = new HttpRequestMessage();
 
         var methodResolver = new HttpMethodResolver();
         request.Method = methodResolver.Resolve(words[0]);
@@ -29,6 +34,7 @@ public class RequestToken : IRequestToken
             var versionResolver = new HttpVersionResolver();
             request.Version = versionResolver.Resolve(words[2]);
         }
+        return state.NewRequest(request);
         // TODO: finnish implementation
     }
 

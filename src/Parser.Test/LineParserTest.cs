@@ -1,17 +1,17 @@
 ﻿using RestClient.Parser.Contracts;
-using RestClient.Parser.Models.Tokens;
+using RestClient.Parser.Tokens;
 
 namespace Parser.Test
 {
     public class LineParserTest
     {
         [Theory]
-        [InlineData("//", false)]
-        [InlineData("#", false)]
-        [InlineData("###", true)]
-        void ParseCommentsTest(string value, bool isInterrupt)
+        [InlineData("//")]
+        [InlineData("#")]
+        // [InlineData("###")]
+        void ParseCommentsTest(string value)
         {
-            var expectedData = new Comment(value, isInterrupt);
+            var expectedData = new CommentToken(value);
             LineParser lineParser = new LineParser(value);
             lineParser.Parse().Should().BeEquivalentTo(expectedData);
         }

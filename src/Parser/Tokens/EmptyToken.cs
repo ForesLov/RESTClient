@@ -1,6 +1,6 @@
 using RestClient.Parser.Contracts;
 
-namespace RestClient.Parser.Models.Tokens;
+namespace RestClient.Parser.Tokens;
 
 public class EmptyToken : IEmptyToken
 {
