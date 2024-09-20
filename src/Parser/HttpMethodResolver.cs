@@ -1,10 +1,10 @@
 namespace RestClient.Parser;
 
-internal class MethodResolver
+internal class HttpMethodResolver
 {
     private readonly HttpMethod _defaultMethod;
 
-    public MethodResolver(HttpMethod? defaultMethod = null)
+    public HttpMethodResolver(HttpMethod? defaultMethod = null)
     {
         _defaultMethod = defaultMethod ?? HttpMethod.Get;
     }

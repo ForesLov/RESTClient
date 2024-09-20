@@ -20,7 +20,7 @@ public class RequestToken : IRequestToken
         if (words.Length < 2)
             throw new Exception("Too small");
 
-        var methodResolver = new MethodResolver();
+        var methodResolver = new HttpMethodResolver();
         request.Method = methodResolver.Resolve(words[0]);
         request.RequestUri = new Uri(words[1]);
 
