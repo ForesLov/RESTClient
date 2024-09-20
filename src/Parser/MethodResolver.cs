@@ -11,9 +11,16 @@ internal class MethodResolver
 
     public HttpMethod Resolve(string str)
     {
-        var method = str.ToUpper() switch
+        var method = str.Trim().ToUpper() switch
         {
             "GET" => HttpMethod.Get,
+            "POST" => HttpMethod.Post,
+            "PUT" => HttpMethod.Put,
+            "PATCH" => HttpMethod.Patch,
+            "DELETE" => HttpMethod.Delete,
+            "HEAD" => HttpMethod.Head,
+            "TRACE" => HttpMethod.Trace,
+            "CONNECT" => HttpMethod.Connect,
             _ => _defaultMethod,
         };
 
