@@ -1,75 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
+using RestClient.Parser.Contracts;
+using RestClient.Parser.Tokens;
 
 namespace RestClient.Parser;
 
 public class LineParser
 {
-    private readonly string _line;
+    private static Regex RequestUriRegex = new("(GET)|(POST)|(PUT)|(PATCH)|(DELETE)|(HEAD)|(TRACE)|(CONNECT) [\\S]+ (HTTP\\/[\\d])", RegexOptions.Compiled);
+    private static Regex BreakRequestRegex = new("^[ \\t]*###", RegexOptions.Compiled);
+    private static Regex HeaderRegex = new("^[\\S]+:[.]*", RegexOptions.Compiled);
+    private static Regex CommentRegex = new("^[\\s]*[#]|(\\/\\/)", RegexOptions.Compiled);
 
-    public LineParser(string Line)
-    { 
-        _line = Line;
-    }
-    public ParsedData? Parse()
-    {
-        if (string.IsNullOrEmpty(_line))
-        {
-            return null;
-        }
-        if (_line.StartsWith("###"))
-            return new Comment(_line, true);
-        if (_line.StartsWith("#") || _line.StartsWith("//"))
-            return new Comment(_line, false);
-        else
-            return new RequestData(_line);
-    }
-}
-public abstract class ParsedData
-{
+    private readonly string? _line;
 
-}
-public class Comment : ParsedData
-{
-    public override bool Equals(object? obj)
+    public LineParser(string? line)
     {
-        if (obj is Comment c)
-            return Equals(c);
-        return false;
+        _line = line;
     }
-    public bool Equals(Comment obj)
+    public IToken Parse()
     {
-        return CommentaryText == obj.CommentaryText && IsInterrupt == obj.IsInterrupt;
-    }
-    public Comment(string commentaryText, bool isInterrupt = false)
-    {
-        CommentaryText = commentaryText;
-        IsInterrupt = isInterrupt;
+        if (_line is null)
+            return EmptyToken.Default;
+        if (BreakRequestRegex.Match(_line).Success)
+            return new BreakRequestToken();
+
+        if (HeaderRegex.Match(_line).Success)
+            return new HeaderToken(_line);
+
+        if (RequestUriRegex.Match(_line).Success)
+            return new RequestToken(_line);
+
+        if (CommentRegex.Match(_line).Success)
+            return new CommentToken(_line);
+
+        if (string.IsNullOrWhiteSpace(_line))
+            return new EmptyLineToken();
+
+        return EmptyToken.Default;
     }
 
-    public readonly string CommentaryText;
-    public readonly bool IsInterrupt;
-}
-public class RequestData : ParsedData
-{
-    public override bool Equals(object? obj)
+    public static IToken Parse(string? line)
     {
-        if (obj is RequestData c)
-            return Equals(c);
-        return false;
-    }
-    public bool Equals(RequestData obj)
-    {
-        return Text == obj.Text;
-    }
-    public readonly string Text;
-
-    public RequestData(string requestDataText)
-    {
-        Text = requestDataText;
+        var parser = new LineParser(line);
+        return parser.Parse();
     }
 }

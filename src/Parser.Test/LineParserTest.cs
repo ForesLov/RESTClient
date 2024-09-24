@@ -1,30 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RestClient.Parser.Contracts;
+using RestClient.Parser.Tokens;
 
-namespace Parser.Test
+namespace Parser.Test;
+
+public class LineParserTest
 {
-    public class LineParserTest
+    [Theory]
+    [InlineData("//")]
+    [InlineData("#")]
+    // [InlineData("###")]
+    void ParseCommentsTest(string value)
     {
+        var expectedData = new CommentToken(value);
+        LineParser lineParser = new LineParser(value);
+        lineParser.Parse().Should().BeEquivalentTo(expectedData);
+    }
 
-
-        [Theory, InlineData("//", false), InlineData("#", false), InlineData("###", true)]
-
-        void ParseCommentsTest( string value, bool IsInterrupt)
-        {
-            var expectedData = new Comment(value, IsInterrupt);
-            LineParser lineParser = new LineParser(value);
-            Assert.Equal(expectedData, lineParser.Parse());
-        }
-        [Fact]
-        void ParseRequestDataTest()
-        {
-            string testData = "GET /index.html HTTP/1.1";
-            RequestData controlData = new RequestData(testData);
-            var parsedData = new LineParser(testData).Parse();
-            Assert.Equal(controlData, parsedData);
-        }
+    [Theory]
+    [InlineData("GET /index.html HTTP/1.1")]
+    [InlineData("POST /index.html")]
+    [InlineData("  POST /index.html/with-spaces")]
+    [InlineData("\tPOST /index.html/with-tab")]
+    void ParseRequestDataTest(string requestStr)
+    {
+        IToken controlData = new RequestToken(requestStr);
+        var parsedData = new LineParser(requestStr).Parse();
+        controlData.Should().BeEquivalentTo(controlData);
     }
 }
